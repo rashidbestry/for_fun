@@ -16,7 +16,6 @@ class Card:
     def __str__(self):
         return self.rank + " of " + self.suit
 
-
 class Deck:
 
     def __init__(self):
@@ -31,7 +30,6 @@ class Deck:
 
     def deal_one(self):
         return self.all_cards.pop()
-
 
 class Player:
 
@@ -51,12 +49,6 @@ class Player:
     def __str__(self):
         return f"Player {self.name} has {len(self.all_cards)} cards"
 
-
-
-
-
-
-
 game_on = True
 player_one = Player("One")
 player_two = Player("Two")
@@ -65,8 +57,8 @@ new_deck.shuffle()
 round = 0
 
 for x in range(26):
-    player_one.add_card(new_deck.deal_one())
-    player_two.add_card(new_deck.deal_one())
+    player_one.add_cards(new_deck.deal_one())
+    player_two.add_cards(new_deck.deal_one())
 
 while game_on:
     round += 1
@@ -79,33 +71,33 @@ while game_on:
         print("Player Two has no Cards, Player One Wins!!!")
         game_on = False
         break
-    player_one_holds = []
-    player_one_holds.append(player_one.remove_one())
-    player_two_holds = []
-    player_two_holds.append(player_two.remove_one())
+    player_one_cards = []
+    player_one_cards.append(player_one.remove_one())
+    player_two_cards = []
+    player_two_cards.append(player_two.remove_one())
     at_war = True
     while at_war:
-        if player_one_holds[-1].value > player_two_holds[-1].value:
-            player_one.add_card(player_one_holds)
-            player_one.add_card(player_two_holds)
+        if player_one_cards[-1].value > player_two_cards[-1].value:
+            player_one.add_cards(player_one_cards)
+            player_one.add_cards(player_two_cards)
             at_war = False
 
-        elif player_one_holds[-1].value < player_two_holds[-1].value:
-            player_two.add_card(player_two_holds)
-            player_two.add_card(player_one_holds)
+        elif player_one_cards[-1].value < player_two_cards[-1].value:
+            player_two.add_cards(player_two_cards)
+            player_two.add_cards(player_one_cards)
             at_war = False
 
         else:
             print("WAR!!!")
-            if len(player_one.all_cards) < 10:
+            if len(player_one.all_cards) < 1:
                 print("Player One lose, Player TWO Wins the WAR!!")
                 game_on = False
                 break
-            elif len(player_two.all_cards) < 10:
+            elif len(player_two.all_cards) < 1:
                 print("Player two lose, Player ONE Wins the WAR!!")
                 game_on = False
                 break
             else:
-                for num in range(5):
-                    player_one_holds.append(player_one.remove_one())
-                    player_two_holds.append(player_two.remove_one())
+                for num in range(1):
+                    player_one_cards.append(player_one.remove_one())
+                    player_two_cards.append(player_two.remove_one())
