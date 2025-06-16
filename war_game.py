@@ -1,103 +1,86 @@
-# War Game (OOP)
 from random import shuffle
-
-suits = ("Hearts", "Diamonds", "Spades", "Clubs")
-ranks = ("Two", "Three", "Fore", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace")
-values = {"Two": 2, "Three": 3, "Fore": 4, "Five": 5, "Six": 6, "Seven": 7, "Eight": 8, "Nine": 9, "Ten": 10,
-          "Jack": 11, "Queen": 12, "King": 13, "Ace": 14}
-
+suits=("Hearts","Diamonds","Clubs","Spades")
+ranks=("One","Two","Three","Fore","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King")
 class Card:
-
-    def __init__(self, suit, rank):
-        self.suit = suit
-        self.rank = rank
-        self.value = values[rank]
-
+    def __init__(self,suit,rank):
+        self.suit=suit
+        self.rank=rank
+        self.value=ranks.index(rank)+1
     def __str__(self):
-        return self.rank + " of " + self.suit
-
+        return f"{self.suit} of {self.rank}"
 class Deck:
-
     def __init__(self):
-        self.all_cards = []
+        self.deck_cards=[]
         for suit in suits:
             for rank in ranks:
-                created_card = Card(suit, rank)
-                self.all_cards.append(created_card)
-
-    def shuffle(self):
-        shuffle(self.all_cards)
-
-    def deal_one(self):
-        return self.all_cards.pop()
-
+                self.deck_cards.append(Card(suit,rank))
+        shuffle(self.deck_cards)
+    def take_one(self):
+        return self.deck_cards.pop(0)
 class Player:
-
-    def __init__(self, name):
-        self.name = name
-        self.all_cards = []
-
-    def remove_one(self):
-        return self.all_cards.pop(0)
-
-    def add_cards(self, new_cards):
-        if type(new_cards) == type([]):
-            self.all_cards.extend(new_cards)
+    def __init__(self,name):
+        self.name=name
+        self.cards=[]
+    def shoot(self):
+        shuffle(self.cards)
+        return self.cards.pop()
+    def gain(self,gain_cards):
+        if gain_cards==list:
+            self.cards.extend(gain_cards)
         else:
-            self.all_cards.append(new_cards)
-
-    def __str__(self):
-        return f"Player {self.name} has {len(self.all_cards)} cards"
-
-game_on = True
-player_one = Player("One")
-player_two = Player("Two")
-new_deck = Deck()
-new_deck.shuffle()
-round = 0
-
-for x in range(26):
-    player_one.add_cards(new_deck.deal_one())
-    player_two.add_cards(new_deck.deal_one())
-
-while game_on:
-    round += 1
-    print(f"Round {round}")
-    if len(player_one.all_cards) == 0:
-        print("Player One has no Cards, Player Two Wins!!!")
-        game_on = False
-        break
-    if len(player_two.all_cards) == 0:
-        print("Player Two has no Cards, Player One Wins!!!")
-        game_on = False
-        break
-    player_one_cards = []
-    player_one_cards.append(player_one.remove_one())
-    player_two_cards = []
-    player_two_cards.append(player_two.remove_one())
-    at_war = True
-    while at_war:
-        if player_one_cards[-1].value > player_two_cards[-1].value:
-            player_one.add_cards(player_one_cards)
-            player_one.add_cards(player_two_cards)
-            at_war = False
-
-        elif player_one_cards[-1].value < player_two_cards[-1].value:
-            player_two.add_cards(player_two_cards)
-            player_two.add_cards(player_one_cards)
-            at_war = False
-
+            self.cards.append(gain_cards)
+def main_engine(PL1_Wins=0,PL2_Wins=0):
+    player_one=Player("player_one")
+    player_two=Player("player_two")
+    deck=Deck()
+    for _ in range(26):
+        player_one.gain(deck.take_one())
+        player_two.gain(deck.take_one())
+    round=0
+    while True:
+        round+=1
+        print(f"Round {round}")
+        if len(player_one.cards)<5:
+            print("Player_One has less than 5 cards!!!\nPlayer_Two Win!!!")
+            PL2_Wins+=1
+            break
+        elif len(player_two.cards)<5:
+            print("Player_Two has less than 5 cards!!!\nPlayer_One Win!!!")
+            PL1_Wins+=1
+            break
         else:
-            print("WAR!!!")
-            if len(player_one.all_cards) < 1:
-                print("Player One lose, Player TWO Wins the WAR!!")
-                game_on = False
-                break
-            elif len(player_two.all_cards) < 1:
-                print("Player two lose, Player ONE Wins the WAR!!")
-                game_on = False
-                break
-            else:
-                for num in range(1):
-                    player_one_cards.append(player_one.remove_one())
-                    player_two_cards.append(player_two.remove_one())
+            temp_cards=[]
+            while True:
+                player_one_shoots = player_one.shoot()
+                player_two_shoots = player_two.shoot()
+                if player_one_shoots.value>player_two_shoots.value:
+                    player_one.gain(player_one_shoots)
+                    player_one.gain(player_two_shoots)
+                    for x in temp_cards:
+                        player_one.gain(x)
+                    break
+                elif player_one_shoots.value<player_two_shoots.value:
+                    player_two.gain(player_one_shoots)
+                    player_two.gain(player_two_shoots)
+                    for x in temp_cards:
+                        player_two.gain(x)
+                    break
+                else:
+                    temp_cards.append(player_one_shoots)
+                    temp_cards.append(player_two_shoots)
+                    continue
+    while True:
+        s=input(f"Press any key to play again ({PL1_Wins}-{PL2_Wins}) : ")
+        game_launcher(PL1_Wins,PL2_Wins)
+
+def game_launcher(PL1_Wins,PL2_Wins):
+    main_engine(PL1_Wins,PL2_Wins)
+
+if __name__=="__main__":
+    game_launcher(PL1_Wins=0,PL2_Wins=0)
+
+
+
+
+
+
