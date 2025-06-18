@@ -208,7 +208,7 @@ def win_chek(player_hand,player_chip,dealer_hand,dealer_chip):
         player_hand.life = False
     elif player_hand.value==dealer_hand.value and dealer_hand.hand==False:
        player_chip.win_bet()
-       dealer_hand.win_bet()
+       dealer_chip.win_bet()
        for x in range(8):
            for y in range(3):
                print("Push! ", end="")
@@ -255,7 +255,7 @@ def game_engine(*args):
     if ask in ("Y","y"):
         game_launcher()
     else:
-        "see ya bro !!!"
+        print("see ya bro !!!")
 
 def game_launcher():
     print("\n--== Welcome to Blackjack GAME! (Rashid edition) ==--")
