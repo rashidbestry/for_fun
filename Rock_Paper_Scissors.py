@@ -34,6 +34,9 @@ def game_launcher():
         print("***************************")
         print("\tWhat do you choose?\n\t>> 0 for Rock <<\n\t>> 1 for Paper <<\n\t>> 2 for Scissors <<")
         my_choice = int(input(">>: "))
+        if my_choice not in (0,1,2):
+            print("Your input is invalid")
+            continue
         print(machine, "\nComputer chose:")
         print(conditions[my_choice])
         if conditions[my_choice] == machine:
@@ -57,7 +60,6 @@ def game_launcher():
         if my_choice == 2 and machine == paper:
             print("You Win!!!")
             continue
-
 
 if __name__ == "__main__":
     game_launcher()
