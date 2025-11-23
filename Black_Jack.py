@@ -1,6 +1,16 @@
 from random import shuffle
 from time import sleep
 
+logo = r"""
+.------.            _     _            _    _            _    
+|A_  _ |.          | |   | |          | |  (_)          | |   
+|( \/ ).-----.     | |__ | | __ _  ___| | ___  __ _  ___| | __
+| \  /|K /\  |     | '_ \| |/ _` |/ __| |/ / |/ _` |/ __| |/ /
+|  \/ | /  \ |     | |_) | | (_| | (__|   <| | (_| | (__|   < 
+`-----| \  / |     |_.__/|_|\__,_|\___|_|\_\ |\__,_|\___|_|\_\\
+      |  \/ K|                            _/ |                
+      `------'                           |__/           
+"""
 
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8, 'Nine':9,
@@ -258,6 +268,7 @@ def game_engine(*args):
         print("see ya bro !!!")
 
 def game_launcher():
+    print(logo)
     print("\n--== Welcome to Blackjack GAME! (Rashid edition) ==--")
     balance=int(input("Please enter your balance: "))
     print("\n\tGreat! Now lets start to play!!!\n")
